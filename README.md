@@ -56,8 +56,9 @@ Body: 图片二进制数据
 ### 示例请求
 ```bash
 curl -X POST --data-binary @"test.jpg" http://localhost:5001/ocr
+```
 ### 响应示例
-成功响应：
+#### 成功响应：
 ```json
 {
   "code": 100,
@@ -70,7 +71,7 @@ curl -X POST --data-binary @"test.jpg" http://localhost:5001/ocr
   ]
 }
 ```
-错误响应：
+#### 错误响应：
 ```json
 {
   "code": 500,
