@@ -100,18 +100,48 @@ import java.net.URI;
 import java.net.http.*;
 import java.nio.file.Path;
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 public class OCRDemo {
     public static void main(String[] args) throws Exception {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:5001/ocr"))
-                .header("Content-Type", "application/octet-stream")
-                .POST(HttpRequest.BodyPublishers.ofFile(Path.of("test.jpg")))
-                .build();
-
-        HttpResponse<String> response = client.send(
-                request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
+            String ocrApi = "localhost:5001/ocr";
+            File imageFile = new File("test.png");
+            byte[] fileBytes = FileUtil.readBytes(imageFile);
+            String result = HttpRequest.post(ocrApi)
+                    .body(fileBytes)
+                    .header("Content-Type", "application/octet-stream")
+                    .execute()
+                    .body();
+            log.info("提取结果 {}", result);
+            JSONObject resp = JSONUtil.parseObj(result);
+            // 构建文本内容的字符串
+            // 读取结果
+            Integer errcode = resp.getInt("code", 0);
+            StringBuilder textBuilder = new StringBuilder();
+            if (errcode == OcrCode.OK) {
+                // 如果OCR处理成功，将提取的文本内容追加到字符串构建器中
+                JSONArray jsonArray = resp.getJSONArray("data");
+                for (Object object : jsonArray) {
+                    JSONObject ele = JSONUtil.parseObj(object);
+                    textBuilder.append(ele.getStr("text")).append(StrUtil.C_LF);
+                }
+                // 记录提取的文本内容
+                log.info("提取结果：{}", textBuilder);
+                log.info("提取图片耗时：{}", System.currentTimeMillis() - l);
+                // 返回提取成功的响应
+                return R.ok(textBuilder.toString());
+            } else {
+                // 如果OCR处理失败，记录错误信息
+                String respMsg = resp.getStr("msg");
+                log.info("提取图片错误信息：{}", respMsg);
+                // 返回提取失败的响应
+                return R.failed(respMsg);
+            }
     }
 }
 ```
