@@ -24,6 +24,7 @@
 
 #### 构建镜像
 ```bash
+git clone https://github.com/zclcz/rapidocr-api.git
 cd rapidocr-api/
 docker build -t rapidocr-api .
 ```
