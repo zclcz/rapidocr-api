@@ -31,7 +31,7 @@ RUN pip install --upgrade pip --default-timeout=1000 && \
     pip install -r requirements.txt
 
 # 暴露端口
-EXPOSE 3746
+EXPOSE 5001
 
 # 启动命令
-CMD ["python", "app.py", "--host", "0.0.0.0", "--port", "3746"]
+CMD ["python", "app.py", "--host", "0.0.0.0", "--port", "5001"]
