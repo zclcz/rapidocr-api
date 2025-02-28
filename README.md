@@ -27,7 +27,7 @@ docker build -t rapidocr-api .
 
 # 运行容器（默认端口 5001）
 docker run -d -p 5001:5001 --name ocr_api rapidocr-api
-
+```
 ### 本地安装方式
 ```bash
 # 克隆项目
