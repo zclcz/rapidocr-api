@@ -39,6 +39,7 @@ pip install -r requirements.txt
 
 # 启动服务
 python app.py
+```
 
 ## 📖 API 使用说明
 ### 请求端点
@@ -63,12 +64,14 @@ curl -X POST --data-binary @"test.jpg" http://localhost:5001/ocr
     }
   ]
 }
+```
 错误响应：
 ```json
 {
   "code": 500,
   "msg": "错误描述信息"
 }
+```
 ## 调用示例
 ### Python
 ```Python
@@ -105,6 +108,7 @@ public class OCRDemo {
         System.out.println(response.body());
     }
 }
+```
 ### Node.js
 ```JavaScript
 const axios = require('axios');
@@ -129,6 +133,7 @@ fs.readFile('test.jpg', (err, data) => {
 const imageBuffer = fs.readFileSync('test.jpg');
 axios.post(url, imageBuffer)
     .then(response => console.log(response.data));
+```
 ### Go
 ```Go
 package main
@@ -162,6 +167,7 @@ func main() {
     resp, _ = http.Post(url, "application/octet-stream", bytes.NewReader(data))
     // ...处理响应...
 }
+```
 ### 响应状态码说明
 状态码	说明
 100	成功
