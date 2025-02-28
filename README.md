@@ -23,7 +23,6 @@
 
 #### 使用Docker部署
 
-```bash
 # 构建镜像
 docker build -t rapidocr-api .
 
