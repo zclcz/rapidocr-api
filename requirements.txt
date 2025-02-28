@@ -1,0 +1,5 @@
+Flask==2.3.2
+Pillow==9.4.0
+numpy==1.24.2
+onnxruntime==1.15.1
+rapidocr_onnxruntime  # 确保此包可以通过pip安装
