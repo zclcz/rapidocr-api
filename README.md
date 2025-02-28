@@ -24,6 +24,7 @@
 
 #### 构建镜像
 ```bash
+cd rapidocr-api/
 docker build -t rapidocr-api .
 ```
 #### 运行容器（默认端口 5001）
