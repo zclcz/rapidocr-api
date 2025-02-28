@@ -4,21 +4,24 @@
 
 ## 📌 项目特性
 
-- 开箱即用的OCR REST API服务
-- 支持图片自动缩放预处理（最大边限制1024px）
-- 并发请求控制（默认最大4线程）
-- 完善的错误处理及日志记录
-- 支持Docker容器化部署
-- 自动内存管理优化
-- 响应数据标准化（JSON格式）
+- **开箱即用**：提供即时可用的OCR REST API服务。
+- **自动缩放**：支持图片自动缩放预处理（最大边限制1024px）。
+- **并发控制**：默认最大4线程的并发请求控制。
+- **错误处理与日志记录**：完善的错误处理机制及详细的日志记录。
+- **容器化部署**：支持Docker容器化部署，便于快速上线。
+- **内存管理**：自动化的内存管理优化。
+- **标准化响应**：所有响应数据均以JSON格式返回。
 
 ## 🚀 快速开始
 
 ### 前置要求
-- Python 3.10+
-- Docker（可选）
 
-### Docker部署方式
+- Python 3.10+
+- Docker（若选择使用）
+
+### 部署指南
+
+#### 使用Docker部署
 
 ```bash
 # 构建镜像
@@ -26,9 +29,9 @@ docker build -t rapidocr-api .
 
 # 运行容器（默认端口5001）
 docker run -d -p 5001:5001 --name ocr_api rapidocr-api
-
-
-### 本地安装方式
+本地安装
+Bash
+深色版本
 # 克隆项目
 git clone https://github.com/zclcz/rapidocr-api.git
 cd rapidocr-api
@@ -38,23 +41,19 @@ pip install -r requirements.txt
 
 # 启动服务
 python app.py
-
 📖 API使用说明
 
-
-请求端点
-POST /ocr
-
-请求格式
-Content-Type: application/octet-stream
-Body: 图片二进制数据
+请求端点: POST /ocr
+请求格式: Content-Type: application/octet-stream，Body为图片二进制数据
 示例请求
 Bash
+深色版本
 curl -X POST --data-binary @"test.jpg" http://localhost:5001/ocr
 响应示例
-成功响应：
+成功响应
 
 Json
+深色版本
 {
   "code": 100,
   "data": [
@@ -65,149 +64,47 @@ Json
     }
   ]
 }
-错误响应：
+错误响应
 
 Json
+深色版本
 {
   "code": 500,
   "msg": "错误描述信息"
 }
 多语言调用示例
-Python
-Python
-import requests
+包括Python、Java、Node.js、Go等语言的调用实例，请参考此处。
 
-url = 'http://localhost:5001/ocr'
-
-# 通过文件路径调用
-with open('test.jpg', 'rb') as f:
-    response = requests.post(url, data=f)
-    print(response.json())
-
-# 通过字节流调用
-image_bytes = open('test.jpg', 'rb').read()
-response = requests.post(url, data=image_bytes)
-print(response.text)
-Java
-Java
-import java.net.URI;
-import java.net.http.*;
-import java.nio.file.Path;
-
-public class OCRDemo {
-    public static void main(String[] args) throws Exception {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:5001/ocr"))
-                .header("Content-Type", "application/octet-stream")
-                .POST(HttpRequest.BodyPublishers.ofFile(Path.of("test.jpg")))
-                .build();
-
-        HttpResponse<String> response = client.send(
-                request, HttpResponse.BodyHandlers.ofString());
-        System.out.println(response.body());
-    }
-}
-Node.js
-JavaScript
-const axios = require('axios');
-const fs = require('fs');
-
-const url = 'http://localhost:5001/ocr';
-
-// 通过文件流调用
-fs.readFile('test.jpg', (err, data) => {
-    if (err) throw err;
-    
-    axios.post(url, data, {
-        headers: {
-            'Content-Type': 'application/octet-stream'
-        }
-    })
-    .then(response => console.log(response.data))
-    .catch(error => console.error(error));
-});
-
-// 通过Buffer调用（推荐）
-const imageBuffer = fs.readFileSync('test.jpg');
-axios.post(url, imageBuffer)
-    .then(response => console.log(response.data));
-Go
-Go
-package main
-
-import (
-    "bytes"
-    "fmt"
-    "io"
-    "net/http"
-    "os"
-)
-
-func main() {
-    url := "http://localhost:5001/ocr"
-    
-    // 通过文件读取
-    file, _ := os.Open("test.jpg")
-    defer file.Close()
-    
-    resp, err := http.Post(url, "application/octet-stream", file)
-    if err != nil {
-        panic(err)
-    }
-    defer resp.Body.Close()
-    
-    body, _ := io.ReadAll(resp.Body)
-    fmt.Println(string(body))
-    
-    // 通过字节切片调用
-    data, _ := os.ReadFile("test.jpg")
-    resp, _ = http.Post(url, "application/octet-stream", bytes.NewReader(data))
-    // ...处理响应...
-}
-响应状态码说明
-状态码	说明
-100	成功
-400	请求参数错误
-500	服务端错误或队列已满
 ⚙️ 配置参数
-可通过以下方式自定义配置：
 
-并发控制
-
-修改max_workers值调整最大并发数
-
-图片处理
-
-resize_image()函数参数：
-
-max_size: 最大边长限制（默认1024px）超过会被等比缩小
-quality: 图片压缩质量（默认95）
-服务端口
-
-修改Dockerfile或启动命令中的--port参数
-
+并发控制：通过修改max_workers值来调整最大并发数。
+图片处理：resize_image()函数参数允许设置最大边长和压缩质量。
+服务端口：可以通过修改Dockerfile或启动命令中的--port参数来指定。
 📝 注意事项
-建议图片分辨率不超过2000x2000px
-单次请求处理时间与图片复杂度正相关
-生产环境建议使用反向代理（如Nginx）
-日志级别可通过修改logging.basicConfig调整
-ONNX模型文件会自动下载到~/.rapidocr目录
+
+建议图片分辨率不超过2000x2000px。
+请求处理时间取决于图片复杂度。
+生产环境中建议使用反向代理如Nginx。
+日志级别可通过修改logging.basicConfig进行调整。
 🔍 性能优化
-使用ONNXRuntime加速推理
-自动内存回收机制
-图片预处理压缩技术
-线程级并发控制
+
+使用ONNXRuntime加速推理过程。
+实现了自动内存回收机制。
+应用了图片预处理压缩技术。
+提供了线程级并发控制。
 📜 许可证
-本项目基于 MIT License
 
- 
----
+本项目遵循MIT License。
 
-**使用说明**：
-1. 直接复制全部内容到`README.md`文件
-2. 需要确保LICENSE文件存在于项目根目录
-3. 建议准备一个`test.jpg`作为示例图片
-4. 实际部署时可根据需求调整配置参数
+使用说明：
 
-文档已包含完整的部署说明、API文档、多语言调用示例和技术细节说明，可以直接用于项目说明。
+将上述内容复制到项目的README.md文件中。
+确保LICENSE文件位于项目根目录。
+准备一个test.jpg作为示例图片。
+根据实际需求调整配置参数。
+深色版本
+
+此版本进行了以下优化：
+- 使用标题和列表增强结构清晰度。
+- 调整代码块和示例请求格式，使其更易于阅读。
+- 清晰地分隔不同部分的内容，以便于用户快速找到所需信息。
