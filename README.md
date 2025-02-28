@@ -118,7 +118,7 @@ public class OCRDemo {
                     .header("Content-Type", "application/octet-stream")
                     .execute()
                     .body();
-            log.info("提取结果 {}", result);
+            System.out.println("提取结果 " + result);
             JSONObject resp = JSONUtil.parseObj(result);
             // 构建文本内容的字符串
             // 读取结果
@@ -132,16 +132,11 @@ public class OCRDemo {
                     textBuilder.append(ele.getStr("text")).append(StrUtil.C_LF);
                 }
                 // 记录提取的文本内容
-                log.info("提取结果：{}", textBuilder);
-                log.info("提取图片耗时：{}", System.currentTimeMillis() - l);
-                // 返回提取成功的响应
-                return R.ok(textBuilder.toString());
+                System.out.println("提取结果："+textBuilder);
             } else {
                 // 如果OCR处理失败，记录错误信息
                 String respMsg = resp.getStr("msg");
-                log.info("提取图片错误信息：{}", respMsg);
-                // 返回提取失败的响应
-                return R.failed(respMsg);
+                System.out.println("提取图片错误信息："+respMsg);
             }
     }
 }
