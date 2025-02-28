@@ -21,11 +21,13 @@
 
 ### Docker 部署方式
 
-```bash
-# 构建镜像
-docker build -t rapidocr-api .
 
+# 构建镜像
+```bash
+docker build -t rapidocr-api .
+```
 # 运行容器（默认端口 5001）
+```bash
 docker run -d -p 5001:5001 --name ocr_api rapidocr-api
 ```
 ### 本地安装方式
