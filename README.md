@@ -94,6 +94,7 @@ with open('test.jpg', 'rb') as f:
 image_bytes = open('test.jpg', 'rb').read()
 response = requests.post(url, data=image_bytes)
 print(response.text)
+```
 ### Java
 ```java
 import java.net.URI;
